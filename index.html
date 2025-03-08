@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI工具分类导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            padding-top: 60px; /* 为固定导航栏留出空间 */
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 导航栏样式 */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+        }
+        
+        .site-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding: 10px 0;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: #2563eb;
+        }
+        
+        .nav-link.active {
+            color: #2563eb;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2563eb;
+            border-radius: 3px;
+        }
+        
+        /* 移动菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #4b5563;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            color: #333;
+            font-weight: 700;
+        }
+        
+        /* 卡片样式 */
+        .category-section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .category-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-title {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2563eb;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+        }
+        
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #2563eb;
+            border-radius: 3px;
+        }
+        
+        /* 图标网格居中 */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .app-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        
+        .app-icon:hover {
+            transform: translateY(-5px);
+        }
+        
+        .icon-container {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .icon-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .icon-overlay i {
+            font-size: 32px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .app-name {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            max-width: 90px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* 常用工具标签样式 */
+        .frequently-used .category-title {
+            color: #dc2626;
+        }
+        
+        .frequently-used .category-title::after {
+            background-color: #dc2626;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                padding: 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                max-height: 300px;
+                padding: 10px 0;
+            }
+            
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 12px 20px;
+                margin: 0;
+            }
+            
+            .nav-link.active::after {
+                display: none;
+            }
+            
+            .nav-link.active {
+                background-color: #f0f5ff;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .app-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 15px;
+            }
+            
+            .icon-container {
+                width: 60px;
+                height: 60px;
+                border-radius: 15px;
+            }
+            
+            .icon-overlay i {
+                font-size: 26px;
+            }
+            
+            .app-name {
+                font-size: 12px;
+                max-width: 70px;
+            }
+            
+            .category-section {
+                padding: 15px;
+            }
+            
+            .category-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="site-title">AI导航</div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#frequently-used" class="nav-link active">常用工具</a>
+                <a href="#aggregators" class="nav-link">AI聚合</a>
+                <a href="#assistants" class="nav-link">AI助手</a>
+                <a href="#image-gen" class="nav-link">图像生成</a>
+                <a href="#video-gen" class="nav-link">视频创作</a>
+                <a href="#code-tools" class="nav-link">编程工具</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">AI工具导航</h1>
+        
+        <!-- 常用工具类别 -->
+        <!-- 常用工具类别 -->
+        <div id="frequently-used" class="category-section frequently-used">
+            <h2 class="category-title">常用工具</h2>
+            <div class="app-grid">
+                <!-- LinuxDo -->
+                <a href="https://linux.do" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #10a37f;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">LinuxDo</span>
+                </a>
+                
+                <!-- YouCom -->
+                <a href="https://www.you.com/claude" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #7c3aed;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">YouCom</span>
+                </a>
+
+                <!-- DeepSeek -->
+                <a href="https://chat.deepseek.com" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #0077B6;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">DeepSeek</span>
+                </a>
+
+                <!-- 通义千问 -->
+                <a href="https://qianwen.aliyun.com" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #FF6B00;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">通义千问</span>
+                </a>
+
+                <!-- Kimi -->
+                <a href="https://kimi.moonshot.cn" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #8B5CF6;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Kimi</span>
+                </a>
+            </div>
+        </div>
+                
+        <!-- AI聚合平台 -->
+        <div id="aggregators" class="category-section">
+            <h2 class="category-title">AI聚合</h2>
+            <div class="app-grid">
+                <!-- Perplexity AI -->
+                <a href="https://www.perplexity.ai" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #2563eb;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Perplexity</span>
+                </a>
+                
+                <!-- Hugging Face -->
+                <a href="https://huggingface.co" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #ffbe0b;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-grin-beam"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Hugging Face</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- AI助手类别 -->
+        <div id="assistants" class="category-section">
+            <h2 class="category-title">AI助手</h2>
+            <div class="app-grid">
+                <!-- ChatGPT -->
+                <a href="https://chat.openai.com" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #10a37f;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">ChatGPT</span>
+                </a>
+                
+                <!-- Claude -->
+                <a href="https://www.anthropic.com/claude" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #7c3aed;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Claude</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 图像生成类别 -->
+        <div id="image-gen" class="category-section">
+            <h2 class="category-title">图像生成</h2>
+            <div class="app-grid">
+                <!-- Midjourney -->
+                <a href="https://www.midjourney.com" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #1e3a8a;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Midjourney</span>
+                </a>
+                
+                <!-- DALL-E -->
+                <a href="https://openai.com/dall-e" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #ef4444;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">DALL-E</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 视频创作类别 -->
+        <div id="video-gen" class="category-section">
+            <h2 class="category-title">视频创作</h2>
+            <div class="app-grid">
+                <!-- RunwayML -->
+                <a href="https://runwayml.com" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #0ea5e9;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-film"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">RunwayML</span>
+                </a>
+                
+                <!-- Synthesia -->
+                <a href="https://www.synthesia.io" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #3b82f6;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-video"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Synthesia</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 编程工具类别 -->
+        <div id="code-tools" class="category-section">
+            <h2 class="category-title">编程工具</h2>
+            <div class="app-grid">
+                <!-- GitHub Copilot -->
+                <a href="https://github.com/features/copilot" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #171515;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">GitHub Copilot</span>
+                </a>
+                
+                <!-- Replit -->
+                <a href="https://replit.com" target="_blank" class="app-icon">
+                    <div class="icon-container" style="background-color: #f59e0b;">
+                        <div class="icon-overlay">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                    </div>
+                    <span class="app-name">Replit</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 更新活动链接状态
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // 获取目标元素
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                // 计算滚动位置（减去导航栏高度）
+                const offset = 80; // 导航栏高度 + 一些额外空间
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+                
+                // 平滑滚动
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // 如果是移动设备，点击后关闭菜单
+                if (window.innerWidth <= 768) {
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+        
+        // 滚动时更新活动链接
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY + 100; // 增加一些偏移
+            
+            // 获取所有分类部分
+            const sections = document.querySelectorAll('.category-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // 找出当前滚动位置对应的部分
+            let currentSection = null;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    currentSection = section;
+                }
+            });
+            
+            if (currentSection) {
+                const targetId = '#' + currentSection.id;
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
