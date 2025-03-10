@@ -3,8 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI工具分类导航</title>
+    <title>AI导航 | 发现强大的AI工具</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --accent-color: #f72585;
+            --accent-light: #f8629b;
+            --china-color: #e63946;
+            --china-light: #f94144;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-radius: 16px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,10 +33,11 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            padding-top: 60px; /* 为固定导航栏留出空间 */
+            font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            padding-top: 70px;
+            line-height: 1.6;
         }
         
         .container {
@@ -30,9 +52,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
         }
         
         .nav-container {
@@ -42,46 +67,65 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
-            height: 60px;
+            height: 70px;
         }
         
         .site-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #2563eb;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .site-title i {
+            margin-right: 10px;
+            font-size: 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .nav-links {
             display: flex;
-            gap: 20px;
+            gap: 30px;
         }
         
         .nav-link {
             text-decoration: none;
-            color: #4b5563;
-            font-weight: 500;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 16px;
             padding: 10px 0;
             position: relative;
-            transition: color 0.3s;
+            transition: var(--transition);
         }
         
         .nav-link:hover {
-            color: #2563eb;
+            color: var(--primary-color);
         }
         
         .nav-link.active {
-            color: #2563eb;
+            color: var(--primary-color);
         }
         
-        .nav-link.active::after {
+        .nav-link::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background-color: #2563eb;
-            border-radius: 3px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
         
         /* 移动菜单按钮 */
@@ -91,41 +135,83 @@
             cursor: pointer;
             background: none;
             border: none;
-            color: #4b5563;
+            color: var(--text-secondary);
         }
         
         .page-title {
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 28px;
-            color: #333;
+            margin-bottom: 50px;
+            font-size: 36px;
             font-weight: 700;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            margin-top: -35px;
+            margin-bottom: 50px;
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         /* 卡片样式 */
         .category-section {
-            margin-bottom: 40px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 50px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 30px;
+            transition: var(--transition);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            opacity: 0;
+            transition: var(--transition);
         }
         
         .category-section:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .category-section:hover::before {
+            opacity: 1;
         }
         
         .category-title {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             padding-bottom: 15px;
-            font-size: 20px;
-            font-weight: 600;
-            color: #2563eb;
-            border-bottom: 1px solid #e5e7eb;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.7);
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .category-title i {
+            margin-right: 8px;
+            font-size: 20px;
         }
         
         .category-title::after {
@@ -134,17 +220,17 @@
             bottom: -1px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
+            width: 80px;
             height: 3px;
-            background-color: #2563eb;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
             border-radius: 3px;
         }
         
         /* 图标网格居中 */
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 25px;
             justify-content: center;
         }
         
@@ -153,50 +239,54 @@
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            transition: transform 0.2s;
+            transition: var(--transition);
+            position: relative;
         }
         
         .app-icon:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
         }
         
         .icon-container {
-            width: 70px;
-            height: 70px;
-            border-radius: 18px;
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            transition: var(--transition);
         }
         
-        .icon-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(0, 0, 0, 0.1);
+        .app-icon:hover .icon-container {
+            box-shadow: var(--shadow-md);
         }
         
-        .icon-overlay i {
-            font-size: 32px;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        .icon-white {
+            background-color: white;
+        }
+        
+        .platform-icon {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            border-radius: 0;
+            transition: var(--transition);
+        }
+        
+        .app-icon:hover .platform-icon {
+            transform: scale(1.08);
         }
         
         .app-name {
-            color: #333;
-            font-size: 14px;
-            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 600;
             text-align: center;
-            max-width: 90px;
+            max-width: 100px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -204,28 +294,61 @@
         
         /* 常用工具标签样式 */
         .frequently-used .category-title {
-            color: #dc2626;
+            color: var(--accent-color);
         }
         
         .frequently-used .category-title::after {
-            background-color: #dc2626;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
+        }
+        
+        .frequently-used::before {
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
+        }
+        
+        /* 中国AI工具标签样式 */
+        .china-ai .category-title {
+            color: var(--china-color);
+        }
+        
+        .china-ai .category-title::after {
+            background: linear-gradient(90deg, var(--china-color), var(--china-light));
+        }
+        
+        .china-ai::before {
+            background: linear-gradient(90deg, var(--china-color), var(--china-light));
+        }
+        
+        /* 新功能标签 */
+        .new-tag {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #ff4d4d, #f43f5e);
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(244, 63, 94, 0.3);
+            z-index: 2;
         }
         
         /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-links {
                 position: fixed;
-                top: 60px;
+                top: 70px;
                 left: 0;
                 width: 100%;
-                background-color: white;
+                background-color: var(--card-bg);
                 flex-direction: column;
                 padding: 0;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                box-shadow: var(--shadow-sm);
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease-out;
                 z-index: 1000;
+                border-bottom: 1px solid rgba(229, 231, 235, 0.5);
             }
             
             .nav-links.active {
@@ -236,16 +359,17 @@
             .nav-link {
                 width: 100%;
                 text-align: center;
-                padding: 12px 20px;
+                padding: 15px 20px;
                 margin: 0;
             }
             
-            .nav-link.active::after {
+            .nav-link::after {
                 display: none;
             }
             
             .nav-link.active {
-                background-color: #f0f5ff;
+                background-color: rgba(67, 97, 238, 0.1);
+                border-left: 4px solid var(--primary-color);
             }
             
             .mobile-menu-btn {
@@ -253,33 +377,38 @@
             }
             
             .app-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 20px;
             }
             
             .icon-container {
-                width: 60px;
-                height: 60px;
-                border-radius: 15px;
-            }
-            
-            .icon-overlay i {
-                font-size: 26px;
+                width: 65px;
+                height: 65px;
+                border-radius: 18px;
             }
             
             .app-name {
-                font-size: 12px;
-                max-width: 70px;
+                font-size: 13px;
+                max-width: 85px;
             }
             
             .category-section {
-                padding: 15px;
+                padding: 20px;
             }
             
             .category-title {
-                font-size: 18px;
-                margin-bottom: 15px;
-                padding-bottom: 10px;
+                font-size: 20px;
+                margin-bottom: 20px;
+                padding-bottom: 12px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .page-subtitle {
+                font-size: 14px;
+                padding: 0 20px;
             }
         }
     </style>
@@ -289,215 +418,187 @@
     <!-- 顶部导航栏 -->
     <nav class="nav-bar">
         <div class="nav-container">
-            <div class="site-title">AI导航</div>
+            <div class="site-title">
+                <i class="fas fa-robot"></i>
+                AI导航
+            </div>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="nav-links" id="navLinks">
                 <a href="#frequently-used" class="nav-link active">常用工具</a>
-                <a href="#aggregators" class="nav-link">AI聚合</a>
+                <a href="#china-ai" class="nav-link">国内AI</a>
                 <a href="#assistants" class="nav-link">AI助手</a>
-                <a href="#image-gen" class="nav-link">图像生成</a>
-                <a href="#video-gen" class="nav-link">视频创作</a>
-                <a href="#code-tools" class="nav-link">编程工具</a>
             </div>
         </div>
     </nav>
 
     <div class="container">
         <h1 class="page-title">AI工具导航</h1>
+        <p class="page-subtitle">探索顶尖人工智能工具，提升工作效率，激发创造力</p>
         
         <!-- 常用工具类别 -->
-        <!-- 常用工具类别 -->
         <div id="frequently-used" class="category-section frequently-used">
-            <h2 class="category-title">常用工具</h2>
+            <h2 class="category-title">
+                <i class="fas fa-star"></i>
+                常用工具
+            </h2>
             <div class="app-grid">
                 <!-- LinuxDo -->
                 <a href="https://linux.do" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #10a37f;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-comment-dots"></i>
-                        </div>
+                    <div class="new-tag">社区</div>
+                    <div class="icon-container icon-white">
+                        <img src="https://linux.do/uploads/default/optimized/3X/9/d/9dd49731091ce8656e94433a26a3ef36062b3994_2_32x32.png" alt="LinuxDo" class="platform-icon">
                     </div>
                     <span class="app-name">LinuxDo</span>
                 </a>
-                 <!-- 52798.xyz -->
-                <a href="https://www.52798.xyz" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #7c3aed;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                    </div>
-                    <span class="app-name">个人博客</span>
-                </a>
-                <!-- YouCom -->
-                <a href="https://www.you.com/claude" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #7c3aed;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                    </div>
-                    <span class="app-name">YouCom</span>
-                </a>
-
-                <!-- DeepSeek -->
-                <a href="https://chat.deepseek.com" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #0077B6;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-brain"></i>
-                        </div>
+                <!-- DeepSeek· -->
+                <a href="https://deepseek.com" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://www.deepseek.com/favicon.ico" alt="DeepSeek" class="platform-icon">
                     </div>
                     <span class="app-name">DeepSeek</span>
                 </a>
-
-                <!-- 通义千问 -->
-                <a href="https://qianwen.aliyun.com" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #FF6B00;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                    </div>
-                    <span class="app-name">通义千问</span>
-                </a>
-
                 <!-- Kimi -->
-                <a href="https://kimi.moonshot.cn" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #8B5CF6;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-comment-alt"></i>
-                        </div>
+                <a href="https://kimi.moonshot.cn/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://statics.moonshot.cn/kimi-chat/favicon.ico" alt="Kimi" class="platform-icon">
                     </div>
                     <span class="app-name">Kimi</span>
                 </a>
+                <!-- 通义千问 -->
+                <a href="https://chat.qwen.ai/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://img.alicdn.com/imgextra/i4/O1CN01EfJVFQ1uZPd7W4W6i_!!6000000006051-2-tps-112-112.png" alt="通义千问" class="platform-icon">
+                    </div>
+                    <span class="app-name">通义千问</span>
+                </a>
+                <!-- YouCom -->
+                <a href="https://www.you.com/claude" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://you.com/favicon_ydc/favicon-196x196.png?v=3" alt="YouCom" class="platform-icon">
+                    </div>
+                    <span class="app-name">YouCom</span>
+                </a>
             </div>
         </div>
-                
-        <!-- AI聚合平台 -->
-        <div id="aggregators" class="category-section">
-            <h2 class="category-title">AI聚合</h2>
+        
+        <!-- 国内AI工具类别 (新增) -->
+        <div id="china-ai" class="category-section china-ai">
+            <h2 class="category-title">
+                <i class="fas fa-dragon"></i>
+                国内AI工具
+            </h2>
             <div class="app-grid">
-                <!-- Perplexity AI -->
-                <a href="https://www.perplexity.ai" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #2563eb;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-search"></i>
-                        </div>
+                <!-- 百度文心一言 -->
+                <a href="https://yiyan.baidu.com/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://nlp-eb.cdn.bcebos.com/logo/favicon.ico" alt="文心一言" class="platform-icon">
                     </div>
-                    <span class="app-name">Perplexity</span>
+                    <span class="app-name">文心一言</span>
                 </a>
                 
-                <!-- Hugging Face -->
-                <a href="https://huggingface.co" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #ffbe0b;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-grin-beam"></i>
-                        </div>
+                <!-- 通义千问 -->
+                <a href="https://chat.qwen.ai/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://img.alicdn.com/imgextra/i4/O1CN01EfJVFQ1uZPd7W4W6i_!!6000000006051-2-tps-112-112.png" alt="通义千问" class="platform-icon">
                     </div>
-                    <span class="app-name">Hugging Face</span>
+                    <span class="app-name">通义千问</span>
+                </a>
+                
+                <!-- 讯飞星火 -->
+                <a href="https://xinghuo.xfyun.cn/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://xinghuo.xfyun.cn/spark-icon.ico" alt="讯飞星火" class="platform-icon">
+                    </div>
+                    <span class="app-name">讯飞星火</span>
+                </a>
+                
+                <!-- Kimi -->
+                <a href="https://kimi.moonshot.cn/" target="_blank" class="app-icon">
+                    
+                    <div class="icon-container icon-white">
+                        <img src="https://statics.moonshot.cn/kimi-chat/favicon.ico" alt="Kimi" class="platform-icon">
+                    </div>
+                    <span class="app-name">Kimi</span>
+                </a>
+                
+                <!-- DeepSeek· -->
+                <a href="https://deepseek.com" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://www.deepseek.com/favicon.ico" alt="DeepSeek" class="platform-icon">
+                    </div>
+                    <span class="app-name">DeepSeek</span>
+                </a>
+                
+                <!-- 豆包 -->
+                <a href="https://www.doubao.com/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/doubao/web/logo-icon.png" alt="豆包" class="platform-icon">
+                    </div>
+                    <span class="app-name">豆包</span>
+                </a>
+                
+              
+                
+                <!-- 智谱清言 -->
+                <a href="https://chatglm.cn/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://chatglm.cn/favicon.ico" alt="智谱清言" class="platform-icon">
+                    </div>
+                    <span class="app-name">智谱清言</span>
                 </a>
             </div>
         </div>
         
         <!-- AI助手类别 -->
         <div id="assistants" class="category-section">
-            <h2 class="category-title">AI助手</h2>
+            <h2 class="category-title">
+                <i class="fas fa-robot"></i>
+                AI助手
+            </h2>
             <div class="app-grid">
                 <!-- ChatGPT -->
                 <a href="https://chat.openai.com" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #10a37f;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-comment-dots"></i>
-                        </div>
+                    <div class="icon-container icon-white">
+                        <img src="https://chat.openai.com/favicon.ico" alt="ChatGPT" class="platform-icon">
                     </div>
                     <span class="app-name">ChatGPT</span>
                 </a>
-                
+                <!-- YouCom -->
+                <a href="https://www.you.com/claude" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://you.com/favicon_ydc/favicon-196x196.png?v=3" alt="YouCom" class="platform-icon">
+                    </div>
+                    <span class="app-name">YouCom</span>
+                </a>
                 <!-- Claude -->
-                <a href="https://www.anthropic.com/claude" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #7c3aed;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-robot"></i>
-                        </div>
+                <a href="https://claude.ai" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://claude.ai/favicon.ico" alt="Claude" class="platform-icon">
                     </div>
                     <span class="app-name">Claude</span>
                 </a>
-            </div>
-        </div>
-        
-        <!-- 图像生成类别 -->
-        <div id="image-gen" class="category-section">
-            <h2 class="category-title">图像生成</h2>
-            <div class="app-grid">
-                <!-- Midjourney -->
-                <a href="https://www.midjourney.com" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #1e3a8a;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-image"></i>
-                        </div>
+                <!-- Gemini -->
+                <a href="https://gemini.google.com" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://www.gstatic.com/lamda/images/favicon_v1_150160cddff7f294ce30.svg" alt="Gemini" class="platform-icon">
                     </div>
-                    <span class="app-name">Midjourney</span>
+                    <span class="app-name">Gemini</span>
                 </a>
-                
-                <!-- DALL-E -->
-                <a href="https://openai.com/dall-e" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #ef4444;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-paint-brush"></i>
-                        </div>
+                <!-- Copilot -->
+                <a href="https://copilot.microsoft.com/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://copilot.microsoft.com/favicon.ico" alt="Copilot" class="platform-icon">
                     </div>
-                    <span class="app-name">DALL-E</span>
+                    <span class="app-name">Copilot</span>
                 </a>
-            </div>
-        </div>
-        
-        <!-- 视频创作类别 -->
-        <div id="video-gen" class="category-section">
-            <h2 class="category-title">视频创作</h2>
-            <div class="app-grid">
-                <!-- RunwayML -->
-                <a href="https://runwayml.com" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #0ea5e9;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-film"></i>
-                        </div>
+                <!-- Perplexity -->
+                <a href="https://www.perplexity.ai/" target="_blank" class="app-icon">
+                    <div class="icon-container icon-white">
+                        <img src="https://www.perplexity.ai/favicon.ico" alt="Perplexity" class="platform-icon">
                     </div>
-                    <span class="app-name">RunwayML</span>
-                </a>
-                
-                <!-- Synthesia -->
-                <a href="https://www.synthesia.io" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #3b82f6;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-video"></i>
-                        </div>
-                    </div>
-                    <span class="app-name">Synthesia</span>
-                </a>
-            </div>
-        </div>
-        
-        <!-- 编程工具类别 -->
-        <div id="code-tools" class="category-section">
-            <h2 class="category-title">编程工具</h2>
-            <div class="app-grid">
-                <!-- GitHub Copilot -->
-                <a href="https://github.com/features/copilot" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #171515;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-code"></i>
-                        </div>
-                    </div>
-                    <span class="app-name">GitHub Copilot</span>
-                </a>
-                
-                <!-- Replit -->
-                <a href="https://replit.com" target="_blank" class="app-icon">
-                    <div class="icon-container" style="background-color: #f59e0b;">
-                        <div class="icon-overlay">
-                            <i class="fas fa-terminal"></i>
-                        </div>
-                    </div>
-                    <span class="app-name">Replit</span>
+                    <span class="app-name">Perplexity</span>
                 </a>
             </div>
         </div>
@@ -525,7 +626,7 @@
                 const targetElement = document.querySelector(targetId);
                 
                 // 计算滚动位置（减去导航栏高度）
-                const offset = 80; // 导航栏高度 + 一些额外空间
+                const offset = 90; // 导航栏高度 + 一些额外空间
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
                 
                 // 平滑滚动
@@ -570,6 +671,56 @@
                     }
                 });
             }
+        });
+        
+        // 图标加载错误处理
+        document.querySelectorAll('.platform-icon').forEach(img => {
+            img.onerror = function() {
+                const toolName = this.alt;
+                const iconContainer = this.parentElement;
+                
+                // 移除图片
+                this.remove();
+                
+                // 创建文字首字母替代图标
+                const letterIcon = document.createElement('div');
+                letterIcon.style.width = '100%';
+                letterIcon.style.height = '100%';
+                letterIcon.style.display = 'flex';
+                letterIcon.style.alignItems = 'center';
+                letterIcon.style.justifyContent = 'center';
+                letterIcon.style.fontSize = '28px';
+                letterIcon.style.fontWeight = 'bold';
+                letterIcon.style.color = 'white';
+                
+                // 设置渐变背景色
+                const colors = {
+                    'LinuxDo': 'linear-gradient(135deg, #10a37f, #0d8b6c)',
+                    'YouCom': 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                    'DeepSeek': 'linear-gradient(135deg, #0077B6, #0096c7)',
+                    'Kimi': 'linear-gradient(135deg, #8B5CF6, #7c3aed)',
+                    '通义千问': 'linear-gradient(135deg, #FF6B00, #ff8700)',
+                    '文心一言': 'linear-gradient(135deg, #175CFF, #3b82f6)',
+                    '讯飞星火': 'linear-gradient(135deg, #F43F5E, #ec4899)',
+                    '豆包': 'linear-gradient(135deg, #10B981, #059669)',
+                    '日日新': 'linear-gradient(135deg, #F59E0B, #d97706)',
+                    '智谱清言': 'linear-gradient(135deg, #06B6D4, #0891b2)',
+                    'ChatGPT': 'linear-gradient(135deg, #10a37f, #0d8b6c)',
+                    'Claude': 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+                    'Gemini': 'linear-gradient(135deg, #4285F4, #0F9D58)',
+                    'Copilot': 'linear-gradient(135deg, #107C10, #13A10E)',
+                    'Perplexity': 'linear-gradient(135deg, #2563EB, #3B82F6)',
+                    'default': 'linear-gradient(135deg, #4361ee, #4895ef)'
+                };
+                
+                // 设置背景和首字母
+                iconContainer.style.background = colors[toolName] || colors['default'];
+                letterIcon.innerText = toolName.charAt(0);
+                
+                // 添加到容器
+                iconContainer.appendChild(letterIcon);
+                iconContainer.classList.remove('icon-white');
+            };
         });
     </script>
 </body>
