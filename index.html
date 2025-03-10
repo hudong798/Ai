@@ -1,4 +1,31 @@
 <!DOCTYPE html>
+<script>
+    // 检查用户偏好或本地存储的主题设置
+    function setTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    
+    // 初始设置主题
+    setTheme();
+    
+    // 切换主题函数
+    function toggleTheme() {
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+</script>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -83,6 +110,7 @@
             font-size: 24px;
             background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
@@ -146,6 +174,7 @@
             color: var(--text-primary);
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             position: relative;
         }
@@ -411,6 +440,29 @@
                 padding: 0 20px;
             }
         }
+        
+        /* Add theme toggle button styles */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 20px;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --bg-color: #1a1b1e;
+            --card-bg: #2a2b2e;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -422,9 +474,14 @@
                 <i class="fas fa-robot"></i>
                 AI导航
             </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
+            <div style="display: flex; align-items: center;">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
             <div class="nav-links" id="navLinks">
                 <a href="#frequently-used" class="nav-link active">常用工具</a>
                 <a href="#china-ai" class="nav-link">国内AI</a>
